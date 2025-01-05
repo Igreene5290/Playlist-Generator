@@ -1,3 +1,9 @@
+a {
+  text-decoration: none;
+  color: white;
+}
+
+
 .navbar {
   background-color: #000000;
   display: flex;
@@ -5,6 +11,8 @@
   padding: 1rem 2rem;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  text-decoration: none;
 }
 
 .navbar-brand {
@@ -17,12 +25,18 @@
   gap: 2rem;
 }
 
-.nav-link {
+.home-link, .generate-link, .about-link {
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
+
+.home-link:hover, .generate-link:hover, .about-link:hover,  .playlist-link:hover {
+  background-color: #333333;
+}
+
+
 
 @media (max-width: 768px) {
   .navbar {
@@ -31,13 +45,14 @@
 
   .navbar-brand {
     font-size: 1.2rem;
+    padding: 0.5rem;
   }
 
   .navbar-links {
     gap: 1rem;
   }
 
-  .nav-link {
+  .home-link, .generate-link, .about-link {
     padding: 0.5rem;
   }
 }

@@ -1,34 +1,40 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, url_for, redirect
 from flask_cors import CORS
-#import spotipy
-#from spotipy.oauth2 import SpotifyOAuth
-#from playlistgenerator import fetch_all_liked_songs, group_songs_by_genre, create_genre_playlists
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+import os
+import random
+import string
+import urllib.parse
 
 app = Flask(__name__)
 CORS(app)
 
+def generateRandomString(length):
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
-@app.route('/api/hello', methods=['GET'])
-def hello():
-    return jsonify({"message": "Hello from Flask!"})
+# Load environment variables
+clientID = os.environ.get('CLIENT_ID')
+clientSecret = os.environ.get('CLIENT_SECRET')
+URI = os.environ.get('URI')
+scope="playlist-modify-public user-library-read"
+state=generateRandomString(16)
+auth_url = urllib.parse.urlencode({
+                        'response_type': 'code',
+                        'client_id': clientID,
+                        'scope': scope,
+                        'redirect_uri': URI,
+                        'state': state
+                    })
+
+
+@app.route('/api/spotify-login')
+def spotify_login():
+    return redirect('https://accounts.spotify.com/authorize?' + auth_url)
+                    
 
 if __name__ == '__main__':
     app.run(debug=True)  # Runs on http://127.0.0.1:5000 
 
-
-
-##@app.route('/create-playlists', methods=['POST'])
-#def create_playlists():
-   # """Create playlists for each genre and add corresponding songs."""
-    # Fetch all liked songs
-   # liked_songs = fetch_all_liked_songs(sp)
-    
-    # Group songs by genre
-   # genre_to_tracks = group_songs_by_genre(sp, liked_songs)
-    
-    # Create genre playlists
-   # create_genre_playlists(sp, genre_to_tracks)
-    
-  #  return jsonify({"message": "Playlists created successfully!"})
 
     

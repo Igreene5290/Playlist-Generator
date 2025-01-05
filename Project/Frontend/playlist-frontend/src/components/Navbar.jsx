@@ -5,12 +5,12 @@ function NavBar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">Playlist Generator</Link>
+        <Link to="/" className="playlist-link">Playlist Generator</Link>
       </div>
       <div className="navbar-links">
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/generate" className="nav-link">Generate</Link>
-        <Link to="/about" className="nav-link">About</Link>      
+        <Link to="/" className="home-link">Home</Link>
+        <Link to="/generate" className="generate-link">Generate</Link>
+        <Link to="/about" className="about-link">About</Link>      
       </div>
     </nav>
   );
