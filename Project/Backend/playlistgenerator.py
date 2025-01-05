@@ -4,27 +4,9 @@ from spotipy.oauth2 import SpotifyOAuth
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 import requests
 
-# Load environment variables
-clientID = os.environ.get('CLIENT_ID')
-clientSecret = os.environ.get('CLIENT_SECRET')
-URI = os.environ.get('URI')
-
-# Test environment variables
-print(f"clientID: {clientID}")
 
 # Permissions for application
 scope = "playlist-modify-public user-library-read"
-
-oauth = SpotifyOAuth(client_id=clientID, client_secret=clientSecret, redirect_uri=URI, scope=scope)
-sp = spotipy.Spotify(auth_manager=oauth)
-
-
-# Retry decorator to handle transient errors
-@retry(
-    stop=stop_after_attempt(3),  # Retry up to 3 times
-    wait=wait_exponential(multiplier=1, min=2, max=10),  # Exponential backoff
-    retry=retry_if_exception_type(requests.exceptions.RequestException)  # Retry on request errors
-)
 
 def fetch_artist_info(sp, artist_id):
     """Fetch artist information with retry."""
@@ -101,25 +83,4 @@ def create_genre_playlists(sp, genre_to_tracks):
         
         print(f"Playlist '{playlist_name}' created with {len(tracks)} tracks!")
 
-def quit():
-    """Exit the program."""
-    print("Thank you for using the Spotify Playlist Generator. Goodbye!")
-    exit()
 
-def main():
-    print("Welcome to the Spotify Playlist Generator\n")
-    menu = input("Enter 1 to generate playlists from liked songs or 'q' to quit: ")
-    if menu.lower() == "q":
-        quit()
-    elif menu == "1":
-        print("Fetching liked songs...")
-        liked_songs = fetch_all_liked_songs(sp)
-
-        print("Grouping songs by genre...")
-        genre_to_tracks = group_songs_by_genre(sp, liked_songs)
-
-        print("Creating playlists...")
-        create_genre_playlists(sp, genre_to_tracks)
-
-# Main Program
-main()
