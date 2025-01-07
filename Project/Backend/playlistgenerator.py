@@ -26,29 +26,36 @@ def fetch_all_liked_songs(sp):
 
 def group_songs_by_genre(sp, liked_songs):
     """Group songs by genre."""
-    song_genres = {}
-    for item in liked_songs:
+    genre_to_tracks = {}
+    artist_cache = {}
+
+    for index, item in enumerate(liked_songs):
+        print(f"Processing track {index + 1}/{len(liked_songs)}")  # Debug
+
         track = item['track']
         track_id = track['id']
         artist_id = track['artists'][0]['id']
 
-        # Fetch the artist's genre with retry
+        # Fetch artist info with caching
         try:
-            artist_info = fetch_artist_info(sp, artist_id)
+            if artist_id not in artist_cache:
+                artist_info = sp.artist(artist_id)
+                artist_cache[artist_id] = artist_info
+            else:
+                artist_info = artist_cache[artist_id]
+
             genres = artist_info['genres']
-            song_genres[track_id] = genres[0] if genres else "Unknown"
+            genre = genres[0] if genres else "Unknown"
         except requests.exceptions.RequestException as e:
             print(f"Error fetching artist info for track {track_id}: {e}")
-            song_genres[track_id] = "Unknown"
+            genre = "Unknown"
 
-    # Group tracks by genre
-    genre_to_tracks = {}
-    for track_id, genre in song_genres.items():
         if genre not in genre_to_tracks:
             genre_to_tracks[genre] = []
         genre_to_tracks[genre].append(track_id)
-    
+
     return genre_to_tracks
+
 
 def create_genre_playlists(sp, genre_to_tracks):
     """Create playlists for each genre and add corresponding songs."""

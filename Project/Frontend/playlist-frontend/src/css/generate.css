@@ -32,3 +32,19 @@ input {
 .spotifyButton:hover {
     background-color: #00e51f;
 }
+
+button {
+  border-radius: 10px;
+  color: white;
+  background-color: black;
+}
+
+button:hover {
+  background-color: #333333;
+}
+
+.userInput {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}

@@ -1,4 +1,5 @@
 import "../css/home.css";
+import LogInButton from "../components/spotifyLogIn";
 
 function Home() {
   return (
@@ -15,9 +16,10 @@ function Home() {
           required for a playlist to be created.
         </p>
       </div>
-      <a href="./generate">
-        <button className="buttons">Generate</button>
-      </a>
+      <div className="authenticate">
+        <h3>Log in to Your Spotify Account</h3>
+        <LogInButton />
+      </div>
     </div>
   );
 }

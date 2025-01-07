@@ -50,3 +50,14 @@ h1 {
 .buttons:hover {
   background-color: #333333;
 }
+
+.authenticate {
+    display: flex;
+    text-align: center;
+    margin-top: 50px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
